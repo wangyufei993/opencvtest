@@ -39,7 +39,7 @@ using namespace std;
 	return 0;
 }*/
 	//实验三，直线检测
- void drawDetectLines(Mat& image,const vector<Vec4i>& lines,Scalar & color)  
+/* void drawDetectLines(Mat& image,const vector<Vec4i>& lines,Scalar & color)  
 {  
     // 将检测到的直线在图上画出来  
     vector<Vec4i>::const_iterator it=lines.begin();  
@@ -70,4 +70,59 @@ int main()
     imshow("zhixian",image);  
     waitKey();  
     return 0;  
+}  */
+
+  
+  
+//实验四：比较两张图片的相似度
+//画直方图用  
+int HistogramBins = 256;  
+float HistogramRange1[2]={0,255};  
+float *HistogramRange[1]={&HistogramRange1[0]};  
+  
+/* 
+ * imagefile1: 
+ * imagefile2: 
+ * method: could be CV_COMP_CHISQR, CV_COMP_BHATTACHARYYA, CV_COMP_CORREL, CV_COMP_INTERSECT 
+ */  
+int CompareHist(const char* imagefile1, const char* imagefile2)  
+{  
+    IplImage *image1=cvLoadImage(imagefile1, 0);  
+    IplImage *image2=cvLoadImage(imagefile2, 0);  
+  
+    CvHistogram *Histogram1 = cvCreateHist(1, &HistogramBins, CV_HIST_ARRAY,HistogramRange);  
+    CvHistogram *Histogram2 = cvCreateHist(1, &HistogramBins, CV_HIST_ARRAY,HistogramRange);  
+  
+    cvCalcHist(&image1, Histogram1);  
+    cvCalcHist(&image2, Histogram2);  
+  
+	
+
+    cvNormalizeHist(Histogram1, 1);  
+    cvNormalizeHist(Histogram2, 1);  
+  
+    // CV_COMP_CHISQR,CV_COMP_BHATTACHARYYA这两种都可以用来做直方图的比较，值越小，说明图形越相似  
+    printf("CV_COMP_CHISQR : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_CHISQR));  
+    printf("CV_COMP_BHATTACHARYYA : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_BHATTACHARYYA));  
+  
+  
+    // CV_COMP_CORREL, CV_COMP_INTERSECT这两种直方图的比较，值越大，说明图形越相似  
+    printf("CV_COMP_CORREL : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_CORREL));  
+    printf("CV_COMP_INTERSECT : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_INTERSECT));  
+  
+	cvShowImage("a",image1);
+	cvShowImage("b",image2);
+	cvWaitKey();
+    cvReleaseImage(&image1);  
+    cvReleaseImage(&image2);  
+    cvReleaseHist(&Histogram1);  
+    cvReleaseHist(&Histogram2);  
+    return 0;  
 }  
+  
+int main(int argc, char* argv[])  
+{  
+    //CompareHist(argv[1], argv[2]);  
+    CompareHist("E:\\1.jpg", "E:\\1.jpg");  
+    return 0;  
+}
