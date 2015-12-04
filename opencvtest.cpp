@@ -75,20 +75,14 @@ int main()
   
   
 //实验四：比较两张图片的相似度
-//画直方图用  
 int HistogramBins = 256;  
 float HistogramRange1[2]={0,255};  
 float *HistogramRange[1]={&HistogramRange1[0]};  
   
-/* 
- * imagefile1: 
- * imagefile2: 
- * method: could be CV_COMP_CHISQR, CV_COMP_BHATTACHARYYA, CV_COMP_CORREL, CV_COMP_INTERSECT 
- */  
-int CompareHist(const char* imagefile1, const char* imagefile2)  
+int CompareHist()  
 {  
-    IplImage *image1=cvLoadImage(imagefile1, 0);  
-    IplImage *image2=cvLoadImage(imagefile2, 0);  
+    IplImage *image1=cvLoadImage("E:\\1.jpg", 0);  
+    IplImage *image2=cvLoadImage("E:\\1.jpg", 0);  
   
     CvHistogram *Histogram1 = cvCreateHist(1, &HistogramBins, CV_HIST_ARRAY,HistogramRange);  
     CvHistogram *Histogram2 = cvCreateHist(1, &HistogramBins, CV_HIST_ARRAY,HistogramRange);  
@@ -110,8 +104,8 @@ int CompareHist(const char* imagefile1, const char* imagefile2)
     printf("CV_COMP_CORREL : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_CORREL));  
     printf("CV_COMP_INTERSECT : %.4f\n", cvCompareHist(Histogram1, Histogram2, CV_COMP_INTERSECT));  
   
-	cvShowImage("a",image1);
-	cvShowImage("b",image2);
+	cvShowImage("tupian1",image1);
+	cvShowImage("tupian2",image2);
 	cvWaitKey();
     cvReleaseImage(&image1);  
     cvReleaseImage(&image2);  
@@ -120,9 +114,8 @@ int CompareHist(const char* imagefile1, const char* imagefile2)
     return 0;  
 }  
   
-int main(int argc, char* argv[])  
+int main(int argc, char** argv)  
 {  
-    //CompareHist(argv[1], argv[2]);  
-    CompareHist("E:\\1.jpg", "E:\\1.jpg");  
+    CompareHist();  
     return 0;  
 }
